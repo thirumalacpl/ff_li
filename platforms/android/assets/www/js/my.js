@@ -36,6 +36,9 @@ var key = "";
          eventa = results.rows.item(i).eventa;
          id = results.rows.item(i).id;
          pair += "<tr><td><center>"+id+"</center></td><td><center>"+key+"</center></td><td><center>"+results.rows.item(i).email+"</center></td><td><center>"+eventa+"</center></td><td><a class=\"update\" href=\"#myPopupDialog\"  data-custom="+"'"+ id+ "'" +"data-rel=\"popup\" data-position-to=\"window\" data-transition=\"pop\"><center><i class='fa fa-pencil-square-o'></i></center></a></td><td><a  id=\"delete\" data=\""+id+"\"><center><i class='fa fa-trash'></i></center></a></td></tr>";
+       alert(key+'keey for');
+           alert(eventa+'eventa for');
+               alert(id+'id for');
        }
        if (pair == "<tr><th>Name</th><th>Day</th><th>Event</th></tr>") {
          pair += "<tr><td><i>empty</i></td><td><i>empty</i></td><td><i>empty</i></td></tr>";
