@@ -7,7 +7,7 @@ show();
     tx.executeSql('CREATE TABLE IF NOT EXISTS mydata (id integer primary key, name text, email text, eventa text)');
   });
 
-$(document).on('click', '#creat', function(){
+$(document).on('click', '#syncc', function(){
     var name =  $("#name").val();
     var email =  $("#email").val();
     var eventa =  $("#eventa").val();
@@ -22,9 +22,11 @@ $(document).on('click', '#creat', function(){
     });
     });
 });
+
+
 function show(){
 db.transaction(function(transaction) {
-transaction.executeSql('SELECT * FROM mydata', [], function (tx, results) {
+transaction.executeSql('SELECT * FROM mydata', [], function (tx, results) { 
 var key = "";
        var pair="<tr><th data-priority=\"1\"><center>Id</center></th><th data-priority=\"1\"><center>Name</center></th><th data-priority=\"2\"><center>Email</center></th><th data-priority=\"3\"><center>Event</center></th><th><center>Update</center></th><th><center>Delete</center></th></tr>";
        var i=0;
@@ -42,6 +44,47 @@ $("#myTable").html(pair);
 }, null);
 });
 }
+
+$(document).on('click', '#syncc', function(){
+
+db.transaction(function(transaction) {
+transaction.executeSql('SELECT * FROM mydata', [], function (tx, results) { 
+var key = "";
+       var pair="<tr><th data-priority=\"1\"><center>Id</center></th><th data-priority=\"1\"><center>Name</center></th><th data-priority=\"2\"><center>Email</center></th><th data-priority=\"3\"><center>Event</center></th><th><center>Update</center></th><th><center>Delete</center></th></tr>";
+       var i=0;
+       var len = results.rows.length, i;
+       for (i=0; i<=len-1; i++) {
+         key = results.rows.item(i).name;
+         eventa = results.rows.item(i).eventa;
+         id = results.rows.item(i).id;
+         pair += "<tr><td><center>"+id+"</center></td><td><center>"+key+"</center></td><td><center>"+results.rows.item(i).email+"</center></td><td><center>"+eventa+"</center></td><td><a class=\"update\" href=\"#myPopupDialog\"  data-custom="+"'"+ id+ "'" +"data-rel=\"popup\" data-position-to=\"window\" data-transition=\"pop\"><center><i class='fa fa-pencil-square-o'></i></center></a></td><td><a  id=\"delete\" data=\""+id+"\"><center><i class='fa fa-trash'></i></center></a></td></tr>";
+       $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+  options.async = true;
+});
+
+var formData = $("#callAjaxForm").serialize();
+//alert('drop button value insert 84 85');
+$.ajax({
+  type: "POST",
+  url: "http://staging.eimpressive.com/slim-four/offline.php?id="+id+"&key="+key+"&emaill="+results.rows.item(i).email+"&eventa="+eventa,
+
+  data: formData,
+  success: onSuccess,
+  async: 'true',
+  crossDomain: true,
+  dataType: 'json',
+  error: onError
+});
+
+       }
+       if (pair == "<tr><th>Name</th><th>Day</th><th>Event</th></tr>") {
+         pair += "<tr><td><i>empty</i></td><td><i>empty</i></td><td><i>empty</i></td></tr>";
+       }
+/*$("#myTable").html(pair);*/
+}, null);
+});
+});
+
 $(document).on('click', '#delete', function(){
 var id = $(this).attr("data");
 db.transaction(function(transaction) {
