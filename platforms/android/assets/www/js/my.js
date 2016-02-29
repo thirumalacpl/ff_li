@@ -7,7 +7,7 @@ show();
     tx.executeSql('CREATE TABLE IF NOT EXISTS mydata (id integer primary key, name text, email text, eventa text)');
   });
 
-$(document).on('click', '#syncc', function(){
+$(document).on('click', '#creat', function(){
     var name =  $("#name").val();
     var email =  $("#email").val();
     var eventa =  $("#eventa").val();
